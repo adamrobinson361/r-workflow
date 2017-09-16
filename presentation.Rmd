@@ -1,0 +1,113 @@
+---
+title: "R Workflow"
+author: "Adam Robinson"
+date: "15/09/2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+This presentation illustrate a workflow for analysis conducted in R. 
+
+The following areas are going to be covered:
+
+- How could you structure your work?
+- How can you ensure that your code works on someone else's machine?
+- How and why should you implement version control?
+- Modulating code
+- R Markdown
+
+## R Proejcts
+
+One of the most useful (and often underused) functions of R are R Projects.
+
+When you use individual R scripts you will often see something like the following: 
+
+```r
+read_csv("X:/A/folder/i/dont/have/dataset.csv)
+```
+
+This has instantly made your work not reproducible and somebody picking up your work will have to change references to their drive or may not even have access to the required drive. 
+
+  A simple solution to this is to utilise projects in R Studio. A project does the following:
+
+- Creates 1 folder per project where all your files are stored
+- Makes the workind directory of R that folder. e.g. to read a csv called dataset.csv all you need to do is `read_csv("dataset.csv")`
+
+### Project Structure
+
+Now you have a folder to store all of your R scripts it is useful to make some commmon folders that are standard accross multiple projects. 
+
+These are as follows:
+
+- R - Where all of your R Scripts live
+- Data - Where all of your raw data lives
+- Queries - Where any queries you used live
+- Outputs - Any ouputs
+
+Using a common convention will mean that anyone in your team will quickly be able to identify where files are. 
+
+Ideally you should include all of the files required to run the analysis in this folder.
+
+On top of this it is useful to include a README.md that covers what your project is trying to achieve, any assumptions you have made and notes on the data sources. 
+
+### Dependency Management
+
+When programming in R you will undoubtably use packages. Packages generally are downloaded from CRAN but can also be installed from other sources (e.g. github). 
+
+Packages are constantly evolving and you may get in to the following situation:
+
+1. Your code ran perfectly when you created it but no longer runs at a later date where you have made updates to your packages.
+
+2. Your code runs on your machine but not on another persons who has different packages to you. 
+
+3. You need to manually check through a project you pick up and install all packages you dont have. Still you may get problems with the versions you install. 
+
+A remedy to this is **Packrat**. Packrat is a dependency management packages that installs all required packages for a project in to the project folder itself. 
+
+This means that whenever anyone picks up the project they can automatically use the exact packages used at development time.
+
+## Version Control 
+
+Version control allows you to comprehensively manage files and chages to files in code based projects. Git is the defacto version control system. 
+
+To use git you need to download and install from [here](https://git-scm.com).
+
+At a minimum you can do the following:
+
+- Check in changes to files routinely to provide the option to go back to the state of the scripts at these points. 
+
+Further to this you can do the following:
+
+- Create multiple branches that you can switch between to try out changes before adding them to the master version of the project. 
+
+All of this can be done via the command line but once set up with Git you should also get a git GUI in R Studio that allows you to do all of this visually. You may need the command line for advanced functionality but should look up how to as and when required. 
+
+## Writing R Code
+
+Once you have gotten your project to set up to this stage you can start using your R code. 
+
+A few best practices that you can start from here are the following:
+
+1. Do not write long R scripts that do everything.
+2. Load all your packages and datasets required in a script at the top of the script. 
+3. Break your code down into seperate files so that each file has a specific use. 
+4. Do not repeat yourself. Any time you repeat yourself you should write a function. 
+
+## R Markdown
+
+To create the output for your analysis you should be using R Markdown. This can output in the following formats:
+
+- Word
+- HTML
+- PDF
+
+When writing R Markdown documents you should avoid writing much doe in the markdown itself. Within the markdown script you can simply use the source function to run external files and then reference the variable you want to output eiter in line or via a code chunk.
+
+
+
+
