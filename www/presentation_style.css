@@ -1,0 +1,73 @@
+slide {
+  background-color: white;
+  background-size: cover;
+}
+
+h2 {
+     color: #104F75;
+     font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+     padding: 0 0 0 0 ;
+     margin-bottom: -25px;
+} 
+
+p, ol, li {
+    color: black;
+    font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+    font-size: 18px;
+}
+
+slides > slide:not(.nobackground):before {
+  width: 130px;
+  height: 75px;
+  background-size: 130px 75px;
+}
+
+.gdbar img {
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 0;
+}
+
+.gdbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+ slides > slide.title-slide hgroup h1 {
+      color:#104F75;
+      font-weight: bold;
+      font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+    }
+    
+table,
+.table-condensed,
+table.rmdtable {
+  width: auto;
+  margin-left: 0;
+  margin-right: auto;
+}
+table,
+.table-condensed,
+table.rmdtable,
+table.rmdtable .header th,
+.table > thead > tr > th {
+  border-collapse: collapse;
+  border-style: solid;
+  border-spacing: 0;
+  border-width: medium 0 medium 0;
+  border-color: inherit
+}
+table.rmdtable th,
+table.rmdtable td,
+table th,
+table.rmdtable tr > td:first-child,
+table.rmdtable  {
+  font-size: 80%;
+  padding: 0.4em 0.5em;
+  color: inherit;
+  background: #FFF;
+  font-weight: normal;
+}
+.table > tbody > tr > td {
+  border-width: 0;
+}
