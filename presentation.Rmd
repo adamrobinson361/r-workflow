@@ -23,7 +23,8 @@ The presentation will cover:
 - Project Structure
 - Modulating code and functions
 - Version Control
-- Creating your outputs in R Markdown
+- Dependency Management
+- R Markdown
 
 ## R Projects
 
@@ -64,7 +65,7 @@ An example minimal structure is as follows:
 To refer to files in these folders you can then simply do the following:
 
 ```r
-read_csv(Data/dataset.csv)
+read_csv("Data/dataset.csv"")
 ```
 
 Using a common convention will mean that anyone in your team will quickly be able to identify where files easily inspect them. 
@@ -73,7 +74,7 @@ On top of this it is useful to include a **README.md** that covers what your pro
 
 ## Modulating code and functions
 
-Long R Scripts that contain all of the code required to run your project are not a good idea and usually unneccesary. 
+Long R Scripts that contain all of the code required to run your analysis are not a good idea and are usually not necessary.
 
 Even if it is well commented there comes a point when getting your head around what is going on is almost impossible and checking for errors becomes increasingly difficult. 
 
@@ -82,15 +83,15 @@ If you are writing long R Scripts you should ask yourself the following question
 1. Am I writing too much code for what I am trying to do?
 2. Could i break this down into multiple scripts?
 
-## Modulating code and functions continued
+## Modulating code and functions
 
 ### Am I writing too much code for what I am trying to do?
 
-In comparrison to Excel or SQL where reducing repetition can be difficult, R makes doing so relatively easy to do.
+In comparison to Excel or SQL where reducing repetition can be difficult, R makes doing so relatively easy to do.
 
 **Example**
 
-Say you need to create 6 charts based on different cuts of a dataset. You may be tempted to do write the code out each time and manually change the parameter.
+Say you need to create 6 charts based on different cuts of a dataset. You may be tempted to write the code out each time and manually change the parameter.
 
 ```r
 ggplot(Data = dataset_1, aes(x=x_col, y = y_col)) +
@@ -101,14 +102,11 @@ ggplot(Data = dataset_6, aes(x=x_col, y = y_col)) +
   geom_point()
 ```
 
-This is a burden in the following situations:
+This will become a burden when the number of parameters increase or changes to the code are required.
 
-1. Lots of parameters changing
-2. Changes to the code are required in future. 
+## Modulating code and functions
 
-## Modulating code and functions continued
-
-A more succint approach to this would be to create a function that makes the chart with the dataset as a parameter.
+A more succinct approach to this would be to create a function that makes the chart with the dataset as a parameter.
 
 e.g. 
 
@@ -121,7 +119,7 @@ ggplot(Data = dataset, aes(x=x_col, y = y_col)) +
 
 ```
 
-We could apply this to all of the datasets in mutliple ways. One example with lapply is as follows:
+We could apply this to all of the data sets in multiple ways. One example with lapply is as follows:
 
 ```r
 # Create a list of all the datasets
@@ -132,11 +130,11 @@ lapply(datasets, fn_chart)
 
 ```
 
-## Modulating code and functions continued
+## Modulating code and functions
 
 ### Could i break this down into multiple scripts?
 
-Say you are working with 3 datasets that need to undergo a data wrangling stage before being joined together as the dataset ready for analysis. 
+Say you are working with 3 data sets that need to undergo a data wrangling stage before being joined together as the dataset ready for analysis. 
 
 You could do all of this in one script but often this step is the same if not longer than the analysis itself. Breaking this out of the main script allows yourself and others to better understand what is going on. 
 
@@ -145,12 +143,12 @@ A potential way to structure the R folder is as follows:
 - main.R
 - dataset_1.R
 - ..
-- dataset_2.R
+- dataset_3.R
 
 in the main.R script you can the do the following to load the scripts:
 
 ```r
-source(R/dataset_1.R)
+source("R/dataset_1.R"")
 ```
 
 ## Version Control 
@@ -163,39 +161,58 @@ At a minimum it allows you to keep a history of all your saves (commits) and giv
 
 ## Version Control 
 
-To use git you need to download and install from [here](https://git-scm.com).
+To use git you need to download and install from [here](https://git-scm.com). Git is a command line tool but there are multiple GUIs that can let you use git in a visual way. 
 
-At a minimum you can do the following:
+Once you have installed git you will have the option to put your projects under git source control via R Studio as follows.
 
-- Check in changes to files routinely to provide the option to go back to the state of the scripts at these points. 
+![](www/git-rprojects.png)
 
-Further to this you can do the following:
+This will then give you a new icon for Git in R Studio where you can undertake the majority of Git commands in the IDE.
 
-- Create multiple branches that you can switch between to try out changes before adding them to the master version of the project. 
+## Version Control 
 
-All of this can be done via the command line but once set up with Git you should also get a git GUI in R Studio that allows you to do all of this visually. You may need the command line for advanced functionality but should look up how to as and when required. 
+### Committing
+
+Probably the main function of Git that you will need to use is the [Commit](https://git-scm.com/docs/git-commit). A commit is basically a save point that you will be able to go back to at any point. 
+
+To make a commit in R Studio go to the GIT drop down and select commit. You will then get a pop up where you can pick the files you want to commit and type a message to link to the commit.
+
+### Pushing and Pulling
+
+Pushing and Pulling come into the equation when you are working with a [remote](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes). A remote is simply a central repository separate to your computer. They are useful for collaboration. 
+
+[GitHub](https://github.com/) is arguably the most popular git remote platform but is not always appropriate for internal work. Other options include a git remote on a shared drive or [Visual Studio Online](https://www.visualstudio.com/vso/). 
+
+When undertaking collaborative work with services like GitHub you should read up on [branching](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell) and [pull requests](https://yangsu.github.io/pull-request-tutorial/). These allow you to create branches separate to the main project and ask for a code review to be undertaken before they can be merged into master. 
 
 ## Dependency Management
 
-When programming in R you will undoubtedly use packages. Packages generally are downloaded from CRAN but can also be installed from other sources (e.g. GitHub). 
+Dependency management is to do with the versions of packages that you or others have installed on your machines when trying to run project code. 
 
-Packages are constantly evolving and you may get in to the following situation:
+It comes in two parts
 
-1. Your code ran perfectly when you created it but no longer runs at a later date where you have made updates to your packages.
+- **Future versions of packaages** - Because R Packages are constantly evolving it is perfectly possible that future versions of packages that you rely on in your analysis have changed functionality. 
 
-2. Your code runs on your machine but not on another persons who has different packages to you. 
+- **Different versions for different users** - Other users or collaborators may have different package versions installed to you. They may need to update their base packages which in turn may break some of their other projects. 
 
-3. You need to manually check through a project you pick up and install all packages you don't have. Still you may get problems with the versions you install. 
-
-A solution to this problem is **Packrat**. Packrat is a dependency management packages that installs all required packages for a project in to the project folder itself. 
+A solution to this problem is **[Packrat](https://rstudio.github.io/packrat/)**. Packrat is a dependency management packages that installs all required packages for a project in to the project folder itself. 
 
 This means that whenever anyone picks up the project they can automatically use the exact packages used at development time.
 
+Packrat is installed as per any other package and the documentation outlines how to use it.
+
 ## R Markdown
 
-R Markdown allows you to 
+R Markdown allows you to complete the end to end aspect of your analysis in R by allowing you to write your output using a mix of [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) is a relatively simple mark up language and R code chunks.
 
-When writing R Markdown documents you should avoid writing much doe in the markdown itself. Within the markdown script you can simply use the source function to run external files and then reference the variable you want to output either in line or via a code chunk.
+You can easily generate outputs in HTML, Word or PDF Format. 
+
+Benefits include:
+
+- If changes are made to underlying calculation you can simply re-run the code to update all of the figures
+- No need to copy and paste values.
+- Makes QA easier
+- They can be source controlled and differences between versions easily analysed.
 
 ## Where to go Next
 
@@ -209,6 +226,20 @@ Next steps to consider after exploring these are as follows:
 
 ## Useful Resources
 
+[R for Data Science](http://r4ds.had.co.nz/)
+
+[Advanced R](http://adv-r.had.co.nz/)
+
+[Bookdown](https://bookdown.org/)
+
+[Pro Git](https://git-scm.com/book/en/v2)
+
+[Packrat Documentation](https://rstudio.github.io/packrat/)
+
 [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+
+[ioslides Documentation](http://rmarkdown.rstudio.com/ioslides_presentation_format.html)
+
+
 
 
