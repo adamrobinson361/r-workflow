@@ -10,6 +10,12 @@ h2 {
      margin-bottom: -25px;
 } 
 
+h3 {
+     color: #104F75;
+     font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+     padding: 0 0 0 0 ;
+}
+
 p, ol, li {
     color: black;
     font-family: Arial,Helvetica Neue,Helvetica,sans-serif;

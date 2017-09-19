@@ -15,71 +15,153 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Introduction
 
-This presentation illustrate a workflow for analysis conducted in R. 
+This presentations aims to cover how you can undertake analytical projects using R such that they are **maintanable** and **reproducible**.
 
-The following areas are going to be covered:
+The presentation will cover:
 
-- How could you structure your work?
-- How can you ensure that your code works on someone elses machine?
-- How and why should you implement version control?
-- Simplifying work through functions and modulating code.
+- Getting started with R Projects
+- Project Structure
+- Modulating code and functions
+- Version Control
 - Creating your outputs in R Markdown
 
 ## R Projects
 
-Code such as the following makes your code instantly not reproducible:
+Code such as the following makes your code instantly difficult to reproduce:
 
 ```r
-read_csv("C:\Users\arobinson4\Documents\data.csv"")
+read_csv("C:/Users/arobinson4/Documents/data.csv"")
+```
+
+or 
+
+```r
+setwd("C:/Users/arobinson4/Documents")
 ```
 
 Somebody picking up your work will have to change references to their drive or may not even have access to the required drive in order to get the code to run. 
 
-To ensure that this never happens you should be using **[R Projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects)**. 
+To ensure that this never happens you should be using **[R Projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects)**. To create a new project got to File > New Project. 
 
 These do the following:
 
 - Create 1 folder where all of your projects analysis is stored.
-- Makes the working directory of R that folder.
+- Makes the working directory of R that folder when the .Rproj file is opened.
 
 For another analyst to pick up your work they simply open the .Rproj file which opens the project environment in R Studio.
 
 ## Project Structure
 
-Now you have a folder to store all of your R scripts it is useful to make some common folders that are standard across multiple projects. 
+After creating a project for all of your files it is useful to create sub folders to group together different types of files.
 
-A simple example of these is as follows:
+An example minimal structure is as follows:
 
-- R - Where all of your R Scripts live
-- Data - Where all of your raw data lives
-- Queries - Where any queries you used live
-- Outputs - Any outputs
+- R - R Scripts
+- Data - Local Copies of data
+- Queries - Queries to get data
+- Outputs - Project outputs
+  
+To refer to files in these folders you can then simply do the following:
 
-Using a common convention will mean that anyone in your team will quickly be able to identify where files are. 
+```r
+read_csv(Data/dataset.csv)
+```
 
-Ideally you should include all of the files required to run the analysis in this folder.
+Using a common convention will mean that anyone in your team will quickly be able to identify where files easily inspect them. 
 
 On top of this it is useful to include a **README.md** that covers what your project is trying to achieve, any assumptions you have made and notes on the data sources. 
 
-## Dependency Management
+## Modulating code and functions
 
-When programming in R you will undoubtedly use packages. Packages generally are downloaded from CRAN but can also be installed from other sources (e.g. github). 
+Long R Scripts that contain all of the code required to run your project are not a good idea and usually unneccesary. 
 
-Packages are constantly evolving and you may get in to the following situation:
+Even if it is well commented there comes a point when getting your head around what is going on is almost impossible and checking for errors becomes increasingly difficult. 
 
-1. Your code ran perfectly when you created it but no longer runs at a later date where you have made updates to your packages.
+If you are writing long R Scripts you should ask yourself the following questions:
 
-2. Your code runs on your machine but not on another persons who has different packages to you. 
+1. Am I writing too much code for what I am trying to do?
+2. Could i break this down into multiple scripts?
 
-3. You need to manually check through a project you pick up and install all packages you don't have. Still you may get problems with the versions you install. 
+## Modulating code and functions continued
 
-A solution to this problem is **Packrat**. Packrat is a dependency management packages that installs all required packages for a project in to the project folder itself. 
+### Am I writing too much code for what I am trying to do?
 
-This means that whenever anyone picks up the project they can automatically use the exact packages used at development time.
+In comparrison to Excel or SQL where reducing repetition can be difficult, R makes doing so relatively easy to do.
+
+**Example**
+
+Say you need to create 6 charts based on different cuts of a dataset. You may be tempted to do write the code out each time and manually change the parameter.
+
+```r
+ggplot(Data = dataset_1, aes(x=x_col, y = y_col)) +
+  geom_point()
+.
+.
+ggplot(Data = dataset_6, aes(x=x_col, y = y_col)) +
+  geom_point()
+```
+
+This is a burden in the following situations:
+
+1. Lots of parameters changing
+2. Changes to the code are required in future. 
+
+## Modulating code and functions continued
+
+A more succint approach to this would be to create a function that makes the chart with the dataset as a parameter.
+
+e.g. 
+
+```r
+
+fn_chart <- function(dataset){
+ggplot(Data = dataset, aes(x=x_col, y = y_col)) +
+  geom_point()
+}
+
+```
+
+We could apply this to all of the datasets in mutliple ways. One example with lapply is as follows:
+
+```r
+# Create a list of all the datasets
+
+datasets <- list(dataset_1,dataset_2,dataset_3,dataset_4,dataset_5,dataset_6)
+
+lapply(datasets, fn_chart)
+
+```
+
+## Modulating code and functions continued
+
+### Could i break this down into multiple scripts?
+
+Say you are working with 3 datasets that need to undergo a data wrangling stage before being joined together as the dataset ready for analysis. 
+
+You could do all of this in one script but often this step is the same if not longer than the analysis itself. Breaking this out of the main script allows yourself and others to better understand what is going on. 
+
+A potential way to structure the R folder is as follows:
+
+- main.R
+- dataset_1.R
+- ..
+- dataset_2.R
+
+in the main.R script you can the do the following to load the scripts:
+
+```r
+source(R/dataset_1.R)
+```
 
 ## Version Control 
 
 Version control allows you to comprehensively manage files and changes to files in code based projects. Git is the defacto version control system. 
+
+At a minimum it allows you to keep a history of all your saves (commits) and gives you the ability to easily compare differences and revert back if required.
+
+![](www/git-basics.png)
+
+## Version Control 
 
 To use git you need to download and install from [here](https://git-scm.com).
 
@@ -93,27 +175,40 @@ Further to this you can do the following:
 
 All of this can be done via the command line but once set up with Git you should also get a git GUI in R Studio that allows you to do all of this visually. You may need the command line for advanced functionality but should look up how to as and when required. 
 
-## Writing R Code
+## Dependency Management
 
-Once you have gotten your project to set up to this stage you can start using your R code. 
+When programming in R you will undoubtedly use packages. Packages generally are downloaded from CRAN but can also be installed from other sources (e.g. GitHub). 
 
-A few best practices that you can start from here are the following:
+Packages are constantly evolving and you may get in to the following situation:
 
-1. Do not write long R scripts that do everything.
-2. Load all your packages and data sets required in a script at the top of the script. 
-3. Break your code down into separate files so that each file has a specific use. 
-4. Do not repeat yourself. Any time you repeat yourself you should write a function. 
+1. Your code ran perfectly when you created it but no longer runs at a later date where you have made updates to your packages.
+
+2. Your code runs on your machine but not on another persons who has different packages to you. 
+
+3. You need to manually check through a project you pick up and install all packages you don't have. Still you may get problems with the versions you install. 
+
+A solution to this problem is **Packrat**. Packrat is a dependency management packages that installs all required packages for a project in to the project folder itself. 
+
+This means that whenever anyone picks up the project they can automatically use the exact packages used at development time.
 
 ## R Markdown
 
-To create the output for your analysis you should be using R Markdown. This can output in the following formats:
-
-- Word
-- HTML
-- PDF
+R Markdown allows you to 
 
 When writing R Markdown documents you should avoid writing much doe in the markdown itself. Within the markdown script you can simply use the source function to run external files and then reference the variable you want to output either in line or via a code chunk.
 
+## Where to go Next
 
+This workflow is far from perfect but should give a good basis on getting up to speed with the core ideas that underpin working in R.
+
+Next steps to consider after exploring these are as follows:
+
+- **Adding Unit Testing to code** - when you create functions you want to know they work. Unit testing allows you to pass them dummy data and check that results are as expected.
+
+- **R Packages** - The fundamental reproducible unit in R are Packages.
+
+## Useful Resources
+
+[Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 
 
