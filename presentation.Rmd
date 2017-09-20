@@ -232,7 +232,9 @@ Next steps to consider after exploring these are as follows:
 
 [Bookdown](https://bookdown.org/)
 
-[Pro Git](https://git-scm.com/book/en/v2)
+[Pro Git](https://git-scm.com/book/en/v2)  
+
+[Git and Github for novices](http://swcarpentry.github.io/git-novice/)
 
 [Packrat Documentation](https://rstudio.github.io/packrat/)
 
