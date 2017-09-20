@@ -118,7 +118,7 @@
 
 <slide class=''><hgroup><h2>Introduction</h2></hgroup><article  id="introduction">
 
-<p>This presentations aims to cover how you can undertake analytical projects using R such that they are <strong>maintanable</strong> and <strong>reproducible</strong>.</p>
+<p>This presentations aims to cover how you can undertake analytical projects using R such that they are <strong>maintainable</strong> and <strong>reproducible</strong>.</p>
 
 <p>The presentation will cover:</p>
 
@@ -198,11 +198,11 @@
 
 <p>Say you need to create 6 charts based on different cuts of a dataset. You may be tempted to write the code out each time and manually change the parameter.</p>
 
-<pre class = 'prettyprint lang-r'>ggplot(Data = dataset_1, aes(x=x_col, y = y_col)) +
+<pre class = 'prettyprint lang-r'>ggplot(Data = dataset_1, aes(x = x_col, y = y_col)) +
   geom_point()
 .
 .
-ggplot(Data = dataset_6, aes(x=x_col, y = y_col)) +
+ggplot(Data = dataset_6, aes(x = x_col, y = y_col)) +
   geom_point()</pre>
 
 <p>This will become a burden when the number of parameters increase or changes to the code are required.</p>
@@ -215,7 +215,7 @@ ggplot(Data = dataset_6, aes(x=x_col, y = y_col)) +
 
 <pre class = 'prettyprint lang-r'>
 fn_chart &lt;- function(dataset){
-ggplot(Data = dataset, aes(x=x_col, y = y_col)) +
+ggplot(Data = dataset, aes(x = x_col, y = y_col)) +
   geom_point()
 }
 </pre>
@@ -224,7 +224,7 @@ ggplot(Data = dataset, aes(x=x_col, y = y_col)) +
 
 <pre class = 'prettyprint lang-r'># Create a list of all the datasets
 
-datasets &lt;- list(dataset_1,dataset_2,dataset_3,dataset_4,dataset_5,dataset_6)
+datasets &lt;- list(dataset_1, dataset_2, dataset_3, dataset_4, dataset_5, dataset_6)
 
 lapply(datasets, fn_chart)
 </pre>
@@ -291,7 +291,7 @@ lapply(datasets, fn_chart)
 <p>It comes in two parts</p>
 
 <ul>
-<li><p><strong>Future versions of packaages</strong> - Because R Packages are constantly evolving it is perfectly possible that future versions of packages that you rely on in your analysis have changed functionality.</p></li>
+<li><p><strong>Future versions of packages</strong> - Because R Packages are constantly evolving it is perfectly possible that future versions of packages that you rely on in your analysis have changed functionality.</p></li>
 <li><p><strong>Different versions for different users</strong> - Other users or collaborators may have different package versions installed to you. They may need to update their base packages which in turn may break some of their other projects.</p></li>
 </ul>
 

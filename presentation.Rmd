@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Introduction
 
-This presentations aims to cover how you can undertake analytical projects using R such that they are **maintanable** and **reproducible**.
+This presentations aims to cover how you can undertake analytical projects using R such that they are **maintainable** and **reproducible**.
 
 The presentation will cover:
 
@@ -94,11 +94,11 @@ In comparison to Excel or SQL where reducing repetition can be difficult, R make
 Say you need to create 6 charts based on different cuts of a dataset. You may be tempted to write the code out each time and manually change the parameter.
 
 ```r
-ggplot(Data = dataset_1, aes(x=x_col, y = y_col)) +
+ggplot(Data = dataset_1, aes(x = x_col, y = y_col)) +
   geom_point()
 .
 .
-ggplot(Data = dataset_6, aes(x=x_col, y = y_col)) +
+ggplot(Data = dataset_6, aes(x = x_col, y = y_col)) +
   geom_point()
 ```
 
@@ -113,7 +113,7 @@ e.g.
 ```r
 
 fn_chart <- function(dataset){
-ggplot(Data = dataset, aes(x=x_col, y = y_col)) +
+ggplot(Data = dataset, aes(x = x_col, y = y_col)) +
   geom_point()
 }
 
@@ -124,7 +124,7 @@ We could apply this to all of the data sets in multiple ways. One example with l
 ```r
 # Create a list of all the datasets
 
-datasets <- list(dataset_1,dataset_2,dataset_3,dataset_4,dataset_5,dataset_6)
+datasets <- list(dataset_1, dataset_2, dataset_3, dataset_4, dataset_5, dataset_6)
 
 lapply(datasets, fn_chart)
 
@@ -191,7 +191,7 @@ Dependency management is to do with the versions of packages that you or others 
 
 It comes in two parts
 
-- **Future versions of packaages** - Because R Packages are constantly evolving it is perfectly possible that future versions of packages that you rely on in your analysis have changed functionality. 
+- **Future versions of packages** - Because R Packages are constantly evolving it is perfectly possible that future versions of packages that you rely on in your analysis have changed functionality. 
 
 - **Different versions for different users** - Other users or collaborators may have different package versions installed to you. They may need to update their base packages which in turn may break some of their other projects. 
 
