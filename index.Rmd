@@ -134,21 +134,21 @@ lapply(datasets, fn_chart)
 
 ### Could i break this down into multiple scripts?
 
-Say you are working with 3 data sets that need to undergo a data wrangling stage before being joined together as the dataset ready for analysis. 
+Long scripts that contain all of your analysis are difficult to follow. By breaking your scripts down into individual modules you can improve both the readability and the maintainability. 
 
-You could do all of this in one script but often this step is the same if not longer than the analysis itself. Breaking this out of the main script allows yourself and others to better understand what is going on. 
+As R is a functional programming language you could look to create scripts for individual sets of functions that you use without your analysis. 
 
 A potential way to structure the R folder is as follows:
 
 - main.R
-- dataset_1.R
+- data_preparation.R
+- charts.R
 - ..
-- dataset_3.R
 
 in the main.R script you can the do the following to load the scripts:
 
 ```r
-source("R/dataset_1.R"")
+source("R/data_preparation.R"")
 ```
 
 ## Version Control 
